@@ -7,7 +7,7 @@
 - [x] P5 05-uniapp路由和菜单配置
 - [x] P6 06-uniapp组件常规引入和easycom引入语法
 - [x] P7 07-uniapp组件通信props和$emit和插槽语法
-- [ ] P8 08-系统参数获取和navBar组件样式动态设置
+- [x] P8 08-系统参数获取和navBar组件样式动态设置
 - [ ] P9 09-页面栈获取和navBar跳转逻辑实现
 - [ ] P10 10-胶囊位置计算和首页navBar显示效果
 - [ ] P11 11-公告效果和utils封装与AppId注册
