@@ -1,47 +1,23 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-		<button @click="handleClick">点击</button>
-		<text>总共购买的水果数量:{{totalNum}}</text>
-		<view v-for="item in list" :key="item.name">
-			<text>{{item.name}}：</text>
-			<text>{{item.num}}</text>
-		</view>
-		<my-component></my-component>
-		<navbar></navbar>
+		<navbar name="navbar组件" :content="data" @changeData="changeData">
+			<view>这里是插槽内容</view>
+			<template v-slot:jmcc>
+				<view>我是具名插槽</view>
+			</template>
+			<template jmccjx>
+				<view>我是具名插槽简写</view>
+			</template>
+		</navbar>
 	</view>
 </template>
 
 <script setup>
 	import { ref, reactive, computed } from 'vue'
-	import { onLoad, onReady } from '@dcloudio/uni-app'
-	
-	const title = ref('Hello')
-	const list = reactive([
-		{name: 'apple', num:1},
-		{name: 'arange', num:2},
-		{name: 'banana', num:3}
-	])
-	// 水果总数
-	const totalNum = computed(()=>{
-		return list.reduce((total,cur)=>{return total+cur.num},0)
-	})
-	
-	const handleClick = () => {
-		list.forEach(item=>{
-			item.num++
-		})
+	const data = ref('动态组件')
+	const changeData = (val) => {
+		data.value = val
 	}
-	
-	onLoad(()=>{
-		console.log('onLoad~~~生命周期')
-	})
-	onReady(()=>{
-		console.log('onReady~~~生命周期')
-	})
 </script>
 
 <style>
