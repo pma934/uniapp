@@ -1,14 +1,7 @@
 <template>
 	<view class="content">
-		<navbar name="navbar组件" :content="data" @changeData="changeData">
-			<view>这里是插槽内容</view>
-			<template v-slot:jmcc>
-				<view>我是具名插槽</view>
-			</template>
-			<template jmccjx>
-				<view>我是具名插槽简写</view>
-			</template>
-		</navbar>
+		<navbar titleText="首页"/>
+		<button style="margin-top: 130rpx;" @click="navigateTo">跳转</button>
 	</view>
 </template>
 
@@ -17,6 +10,11 @@
 	const data = ref('动态组件')
 	const changeData = (val) => {
 		data.value = val
+	}
+	const navigateTo = () => {
+		uni.navigateTo({
+			url:'/pages/search/index'
+		})
 	}
 </script>
 

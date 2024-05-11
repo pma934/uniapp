@@ -1,33 +1,49 @@
 <template>
 	<view class="nav">
 		<view :style="'height:' + status + 'rpx;' + containerStyle"></view>
-		<view class="navbar" :style="'height:' + navHeight + 'rpx;' + containerStyle"></view>
+		<view class="navbar" :style="'height:' + navHeight + 'rpx;' + containerStyle">
+			<view class="back-icon" @click="backOrHome">
+				<image v-if="pages > 1" src="@/static/image/back.png"></image>
+				<image v-else src="@/static/image/home.png"></image>
+			</view>
+			<view class="nav-title" v-if="titleText">
+				<view :style="'height:'+navHeight+'rpx;line-height:'+navHeight+'rpx;'+textStyle">{{titleText}}</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script setup>
-	import { ref, onBeforeMount, defineProps } from 'vue'
+	import {
+		ref,
+		onBeforeMount,
+		defineProps
+	} from 'vue'
 	defineProps({
-		background:{
-			type:String,
+		background: {
+			type: String,
 			default: 'rgba(255,255,255,1)'
 		},
-		color:{
-			type:String,
+		color: {
+			type: String,
 			default: 'rgba(0,0,0,1)'
 		},
-		fontSize:{
-			type:String,
+		fontSize: {
+			type: String,
 			default: 32
 		},
 		iconWidth: {
-			type:String,
+			type: String,
 			default: 116
 		},
-		iconHeight:{
-			type:String,
+		iconHeight: {
+			type: String,
 			default: 38
 		},
+		titleText: {
+			type: String,
+			default: ''
+		}
 	})
 	//状态栏高度
 	const status = ref(0)
@@ -39,18 +55,23 @@
 	const textStyle = ref('')
 	//图标样式
 	const iconStyle = ref('')
-	
+	//页面栈数量
+	const pages = ref(getCurrentPages().length)
+
 	onBeforeMount(() => {
 		setNavSize()
 	})
 	//计算状态栏高度
 	const setNavSize = () => {
-		const { system, statusBarHeight } = uni.getSystemInfoSync()
-		status.value = statusBarHeight * 2;
+		const {
+			system,
+			statusBarHeight
+		} = uni.getSystemInfoSync()
+		status.value = statusBarHeight * 2; //为什么要×2
 		const isiOS = system.indexOf('iOS') > -1
-		if(!isiOS){
+		if (!isiOS) {
 			navHeight.value = 96
-		}else{
+		} else {
 			navHeight.value = 88
 		}
 	}
@@ -60,15 +81,50 @@
 		textStyle.value = `color: ${props.color}; font-size: ${props.fontSize}rpx;`
 		iconStyle.value = `width: ${props.iconWidth}rpx; height: ${props.iconHeight}rpx`
 	}
-	
+	// 返回或到首页
+	const backOrHome = () => {
+		if (pages.value > 1) {
+			uni.navigateBack({
+				animationType: 'auto'
+			})
+		} else {
+			uni.switchTab({
+				url: '/pages/index/index'
+			})
+		}
+	}
 </script>
 
-<style>
+<style lang="scss">
 	.nav {
 		position: fixed;
 		width: 100%;
 		top: 0;
 		left: 0;
 		z-index: 2;
+	}
+
+	.back-icon {
+		dusplay: flex;
+		align-items: center;
+		width: 64rpx;
+		height: 100%;
+		margin-left: 20rpx;
+
+		image {
+			height: 64rpx;
+			width: 64rpx;
+		}
+	}
+
+	.navbar {
+		position: relative;
+
+		.nav-title {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+		}
 	}
 </style>
